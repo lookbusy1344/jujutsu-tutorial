@@ -6,3 +6,15 @@ title = "Steve's Jujutsu Tutorial"
 
 [output.html]
 git-repository-url = "https://github.com/steveklabnik/jujutsu-tutorial"
+additional-css = ["print.css"]
+
+[output.pdf]
+optional = true
+print-background = false
+display-header-footer = false
+margin-top = 0.5
+margin-bottom = 0.5
+margin-left = 0.5
+margin-right = 0.5
+scale = 0.8
+generate-document-outline = true
