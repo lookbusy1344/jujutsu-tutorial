@@ -1,5 +1,7 @@
 # Summary
 
+[Cover](cover.md)
+
 - [Introduction](introduction/introduction.md)
     - [What is jj and why should I care?](introduction/what-is-jj-and-why-should-i-care.md)
     - [How to read this tutorial](introduction/how-to-read.md)
