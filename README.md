@@ -1,6 +1,7 @@
 # Steve's Jujutsu tutorial (with my updates Aug 2026!)
 
-[Read the updated version here](https://lookbusy1344.github.io/jujutsu-tutorial/)
+[Read the updated version here](https://lookbusy1344.github.io/jujutsu-tutorial/), or
+[download it as a PDF](https://lookbusy1344.github.io/jujutsu-tutorial/jujutsu-tutorial.pdf).
 
 This is an expanded version of Steve Klabnik's original tutorial, with extra
 chapters and fixes. Thanks to Steve for his work — you can find it at
