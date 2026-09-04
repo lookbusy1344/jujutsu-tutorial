@@ -42,9 +42,18 @@ jobs:
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
-      - name: Stamp cover with commit and build date
+      - name: Stamp cover with revision and build date
         run: |
-          sed -i "s/__BUILD_COMMIT__/${GITHUB_SHA::7}/" src/cover.md
+          # jj writes the change id into a `change-id` git header, so we can
+          # recover it here without jj installed. Show the 8-char change id
+          # (what most readers use) next to the short git hash.
+          GIT_SHORT="${GITHUB_SHA::7}"
+          JJ_CHANGE=$(git cat-file commit "${GITHUB_SHA}" | sed -n 's/^change-id //p' | cut -c1-8)
+          if [ -n "${JJ_CHANGE}" ]; then REV="${JJ_CHANGE} / ${GIT_SHORT}"; else REV="${GIT_SHORT}"; fi
+          # Single-source the jj version from the install chapter's pinned command.
+          JJ_VERSION=$(grep -oE 'jj-cli@[0-9]+\.[0-9]+\.[0-9]+' src/hello-world/how-to-install.md | head -1 | cut -d@ -f2)
+          sed -i "s|__BUILD_JJ_VERSION__|${JJ_VERSION}|" src/cover.md
+          sed -i "s|__BUILD_COMMIT__|${REV}|" src/cover.md
           sed -i "s/__BUILD_DATE__/$(date -u +%Y-%m-%d)/" src/cover.md
       - name: Build with mdBook
         run: mdbook build
