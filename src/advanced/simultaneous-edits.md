@@ -524,7 +524,7 @@ Abandoned 2 commits:
   msmntwvo/1 21569f7a push-vmunwxsksqvk* | (divergent) (empty) add a new function
   vmunwxsk/1 9a050939 (divergent) (empty) add a comment to main
 Deleted bookmarks: push-vmunwxsksqvk
-Rebased 3 descendant commits onto parents of abandoned commits
+Rebased 3 descendant commits onto parents of abandoned commits.
 Working copy  (@) now at: vvvouunp e3f9254f (empty) (no description set)
 Parent commit (@-)      : xnutwmso 0459bd1c (empty) merge: steve's branch
 ```
