@@ -515,13 +515,13 @@ that branch:
 > jj abandon push-vmunwxsksqvk
 Abandoned 1 commits:
   msmntwvo?? 21569f7a push-vmunwxsksqvk* | (empty) add a new function
-Rebased 3 descendant commits onto parents of abandoned commits
+Rebased 3 descendant commits onto parents of abandoned commits.
 Working copy  (@) now at: vvvouunp ace3f1a2 (empty) (no description set)
 Parent commit (@-)      : xnutwmso 32871810 (empty) merge: steve's branch
 > jj abandon push-vmunwxsksqvk
 Abandoned 1 commits:
   vmunwxsk?? 9a050939 push-vmunwxsksqvk* | (empty) add a comment to main
-Rebased 3 descendant commits onto parents of abandoned commits
+Rebased 3 descendant commits onto parents of abandoned commits.
 Working copy  (@) now at: vvvouunp e3f9254f (empty) (no description set)
 Parent commit (@-)      : xnutwmso 0459bd1c (empty) merge: steve's branch
 ```

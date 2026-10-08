@@ -193,3 +193,13 @@ push = "myfork"
 This can either go in the repo-specific `.jj/repo/config.toml` or the global
 config if you expect most of your repos to have the same remotes.
 
+`jj git push` can also push to several remotes at once. Repeat the flag, as in
+`jj git push --remote origin --remote myfork`, or set `git.push` to a list:
+
+```toml
+[git]
+push = ["origin", "myfork"]
+```
+
+Both forms accept string patterns, so `push = "glob:*"` pushes to every remote.
+
