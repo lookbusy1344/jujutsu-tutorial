@@ -35,7 +35,7 @@ other tools won't find it by accident:
 
 ```console
 $ jj git colocation status
-Workspace is currently not colocated with Git.
+Workspace 'default' is currently not colocated with Git.
 Last imported/exported Git HEAD: (none)
 Hint: To enable colocation, run: `jj git colocation enable`
 
@@ -132,7 +132,9 @@ Workspace successfully converted into a non-colocated Jujutsu/Git workspace.
 ```
 
 `jj git colocation enable` converts back, and `git.colocate = false` in your
-config makes `--no-colocate` the default for new repositories.
+config makes `--no-colocate` the default for new repositories and workspaces.
+In a repository with several workspaces, these commands act on the workspace
+we run them in.
 
 ## Native repositories
 
@@ -145,9 +147,10 @@ git
 ```
 
 `jj` does have a storage format of its own, and chapter one mentioned it in
-passing. Its `SimpleBackend` is a proof of concept, and `jj` 0.45.1 does not
-provide a command for creating a repository that uses it. It isn't a third
-everyday choice for us to consider. For normal use, both arrangements in this
+passing. Its `SimpleBackend` is a proof of concept. The only way to create a
+repository that uses it is `jj debug init-simple`, and `jj` describes its
+`debug` commands as "not intended for users". It isn't a third everyday choice
+for us to consider. For normal use, both arrangements in this
 chapter use the `git` backend; colocation only decides whether the Git
 repository is exposed at the top of our working copy.
 

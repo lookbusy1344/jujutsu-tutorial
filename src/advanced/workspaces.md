@@ -15,6 +15,7 @@ or a scratch checkout for a tool that does a lot of work whenever files change.
 
 ```console
 $ jj workspace add ../feature-b
+Created Git worktree for the new workspace.
 Created workspace in "../feature-b"
 Working copy  (@) now at: omvuuyon b1c8e7a0 (empty) (no description set)
 Parent commit (@-)      : posvwlwz 6c45c26f initial
@@ -24,6 +25,12 @@ Added 1 files, modified 0 files, removed 0 files
 There's now a second working directory at `../feature-b`, backed by the same
 repository. It got its own fresh empty change, `omvuuyon`. This is the important
 part: *each workspace has its own `@`*.
+
+The first line of output tells us something else. Our repository is colocated,
+so `jj` colocated the new workspace too, by creating a `git` worktree for it.
+`git status` and `gh` work in `../feature-b` just as they do in the original
+directory. This needs `git` 2.42 or newer. If we'd rather have a plain `jj`
+workspace with no `.git` in it, `--no-colocate` skips the worktree.
 
 ```console
 $ jj workspace list
@@ -66,9 +73,11 @@ Parent commit (@-): posvwlwz 6c45c26f initial
 ## What it isn't
 
 `git worktree` makes you assign a branch to each tree, and refuses to check out
-a branch that's already checked out somewhere else. None of that applies here.
-A workspace just points its `@` at a revision. There's no branch to reserve and
-nothing to be exclusive about.
+a branch that's already checked out somewhere else. None of that applies here,
+even though there's a `git` worktree underneath. Like the main directory, it
+sits on a detached `HEAD` at the parent of its `@`. A workspace just points its
+`@` at a revision. There's no branch to reserve and nothing to be exclusive
+about.
 
 There is one rule to remember: we shouldn't edit the *same* commit from two
 workspaces. `jj` doesn't forbid it, but both directories would then hold files
@@ -84,6 +93,7 @@ on. That workspace will fall behind:
 $ jj st
 Error: The working copy is stale (not updated since operation 8f799e48797c).
 Hint: Run `jj workspace update-stale` to update it.
+See https://docs.jj-vcs.dev/latest/working-copy/#stale-working-copy for more information.
 ```
 
 Nothing has been damaged. The repository knows exactly where that commit went;
@@ -108,19 +118,38 @@ workspace absorbs it without comment. Staleness is about the files on disk
 disagreeing with the commit they represent. If we'd rather update them
 automatically, we can set `snapshot.auto-update-stale = true` in our config.
 
+## Undoing across workspaces
+
+There's one shared operation log, so the most recent operation might have come
+from the other directory. `jj undo` won't reach across to it:
+
+```console
+$ jj undo
+Error: Refusing to undo operation ba337735fb7c because it was performed in workspace feature-b
+Hint: Use `--allow-cross-workspace` to undo it anyway, or use `jj op revert` to revert a specific operation
+```
+
+This protects us from undoing work in a directory we aren't looking at. If
+that's what we want, `--allow-cross-workspace` does it, and `jj redo` takes the
+same flag.
+
 ## Cleaning up
 
 Deleting the directory isn't enough, because the repository still has the
-workspace registered. Cleanup takes two steps, in either order:
+workspace registered. `jj workspace remove` does the whole job:
 
 ```console
-$ jj workspace forget feature-b
-$ rm -rf ../feature-b
+$ jj workspace remove feature-b
+Removed Git worktree for "/home/steve/src/feature-b".
+Removed workspace directory "/home/steve/src/feature-b".
 ```
 
-`forget` unregisters the workspace and leaves the directory alone. The commits
-that workspace made are ordinary commits and stay in the repository; only the
-`feature-b@` marker goes away.
+It snapshots the workspace first, so any edits we hadn't committed end up in
+its `@` rather than being lost. The commits that workspace made are ordinary
+commits and stay in the repository; only the `feature-b@` marker goes away.
+
+If we want to keep the files, `jj workspace forget feature-b` unregisters the
+workspace and removes its `git` worktree, but leaves the directory alone.
 
 One more command worth knowing, mostly for scripts:
 

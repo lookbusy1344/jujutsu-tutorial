@@ -36,6 +36,39 @@ Our working copy never moved! We didn't need to check out the commit, use
 `jj edit`, or run `jj new` afterwards. As with any rewrite, rebasing its
 descendants can introduce conflicts that we'll then need to resolve.
 
+## Editing one file with `jj file edit`
+
+The TUI is good for picking lines out of a diff. When we already know which file
+is wrong, there's a shorter route. `jj file edit` opens a single file from any
+revision in our editor:
+
+```console
+$ jj file edit -r 'description(glob:"add feature*")' src/feature.rs
+Rebased 1 descendant commits.
+Working copy  (@) now at: pxukppkx 9c35793d (empty) (no description set)
+Parent commit (@-)      : nmvqtsqq 2f28cbb7 add feature
+Added 0 files, modified 1 files, removed 0 files
+```
+
+We get the file as it is in that commit, not as it is in our working copy. We
+delete the stray debug line, save, and `jj` writes the file back into the
+commit and rebases everything above it, including our `@`. If the file is
+conflicted in that revision, the conflict markers show up in the editor, and
+fixing them there resolves the conflict.
+
+Its sibling, `jj file delete`, takes a file out of a revision altogether. That
+suits a log file we committed by accident:
+
+```console
+$ jj file delete -r 'description(glob:"add feature*")' debug.log
+Rebased 1 descendant commits.
+Working copy  (@) now at: pxukppkx 31531a98 (empty) (no description set)
+Parent commit (@-)      : nmvqtsqq a3c6c92e add feature
+Added 0 files, modified 0 files, removed 1 files
+```
+
+Again, our working copy stays where it was.
+
 ## What you can and can't do here
 
 `jj diffedit` edits the *content* of one commit against its parent. You're

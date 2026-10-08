@@ -18,33 +18,58 @@ copy could vanish along with everything else:
 
 ```sh
 #!/bin/sh
-[ "$(cat v.txt)" -lt 4 ]
+[ ! -e v.txt ] || [ "$(cat v.txt)" -lt 4 ]
 ```
 
+The first test treats a missing `v.txt` as good. We'll see why in a moment.
 Then we can run it over the range we want to search:
 
 ```console
 $ jj bisect run --range 'mutable() & ~empty()' -- ~/bin/check.sh
-Bisecting: 3 revisions left to test after this (roughly 2 steps)
-Now evaluating: upqnzxnm d8afdf06 c5
-Working copy  (@) now at: kzlyrqkk e7a2a494 (empty) (no description set)
-Parent commit (@-)      : upqnzxnm d8afdf06 c5
-The revision is bad.
+Pre-bisection check: ensuring this revision is bad:
+zzxyuqmp 49cc9a8b c6
+Working copy  (@) now at: qwnuvmxx b1598543 (empty) (no description set)
+Parent commit (@-)      : zzxyuqmp 49cc9a8b c6
+Pre-bisection check: ensuring this revision is good:
+zzzzzzzz 00000000 (empty) (no description set)
+Working copy  (@) now at: xlzxqzyk 665382aa (empty) (no description set)
+Parent commit (@-)      : zzzzzzzz 00000000 (empty) (no description set)
+Added 0 files, modified 0 files, removed 1 files
+Bisecting: 5 revisions left to test after this (roughly 3 steps)
+Now evaluating: yvqzopnt 8d249e6a c3
+Working copy  (@) now at: vyvtyopt 9149b5f2 (empty) (no description set)
+Parent commit (@-)      : yvqzopnt 8d249e6a c3
+Added 1 files, modified 0 files, removed 0 files
+The revision is good.
 
-Bisecting: 1 revisions left to test after this (roughly 1 steps)
-Now evaluating: lrmywvmw 4e2d0df0 c4
-Working copy  (@) now at: oqonuxym d9edf35c (empty) (no description set)
-Parent commit (@-)      : lrmywvmw 4e2d0df0 c4
+Bisecting: 2 revisions left to test after this (roughly 2 steps)
+Now evaluating: vmqnvymy 446a5e73 c4
+Working copy  (@) now at: qvvkwpks f7dc4d7b (empty) (no description set)
+Parent commit (@-)      : vmqnvymy 446a5e73 c4
+Added 0 files, modified 1 files, removed 0 files
 The revision is bad.
 
 Search complete. To discard any revisions created during search, run:
-  jj op restore e31971608abc
-The first bad revision is: lrmywvmw 4e2d0df0 c4
+  jj op restore 7f5d71cdc5f8
+The first bad revision is: vmqnvymy 446a5e73 c4
 ```
 
 At each step, `jj` checks out a revision, runs our command, and narrows the
 range. The answer at the end is the first revision where the command started
 failing.
+
+Before any of that, though, `jj` checks the two ends. The newest revision in
+the range has to be bad, and the revision just before the range has to be
+good. Otherwise there's no change from good to bad to find. Here, the revision
+before the range is the root commit, which has no `v.txt` at all. A script that
+only ran `cat v.txt` would fail there, and `jj` would stop before searching:
+
+```text
+Cannot bisect: this revision was expected to be good, but was bad (exit status: 2) instead.
+```
+
+That's why our script counts a missing file as good. If we already trust both
+ends, `--trust-endpoints` skips the check.
 
 ## The range
 
@@ -66,7 +91,7 @@ Notice what the output offers at the end:
 
 ```text
 To discard any revisions created during search, run:
-  jj op restore e31971608abc
+  jj op restore 7f5d71cdc5f8
 ```
 
 Bisecting checks out revisions as it searches, so it leaves working-copy

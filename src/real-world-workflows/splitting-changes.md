@@ -47,6 +47,31 @@ The second still has the old description, "two unrelated things at once", which
 isn't accurate any more. We should use `jj describe` to give it a better name.
 `jj` can split the change for us, but it can't know what the two parts mean.
 
+We can also name both halves during the split. If we leave off `-m`, `jj` opens
+one editor with both descriptions in it, one after the other:
+
+```text
+JJ: describe 5c0e8a1d93f2 -------
+JJ: Enter a description for the selected changes.
+two unrelated things at once
+
+JJ: Change ID: ynplyknw
+JJ: This commit contains the following changes:
+JJ:     A DOCS.md
+JJ:
+JJ: describe 7b42d6e0a1c8 -------
+JJ: Enter a description for the remaining changes.
+two unrelated things at once
+
+JJ: Change ID: mxvnxuyl
+JJ: This commit contains the following changes:
+JJ:     A main.rs
+```
+
+Each description sits under its own `JJ: describe` line, and the file list
+reminds us which half is which. We edit both, save, and the split is done with
+nothing left to fix up.
+
 One detail worth noticing: the *selected* part kept the original change ID,
 `ynplyknw`, and the remainder got a fresh one. The part you pull out is treated
 as the continuation of the original change.

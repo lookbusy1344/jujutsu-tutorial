@@ -64,7 +64,7 @@ diff --git a/src/main.rs b/src/main.rs
 index a4fd3383fc..ba1a7af2a4 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -2,4 +2,5 @@
+@@ -2,4 +2,5 @@ fn main() {
  
  fn main() {
      println!("Hello, world!");

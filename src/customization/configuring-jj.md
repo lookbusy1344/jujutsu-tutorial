@@ -128,7 +128,8 @@ push = "origin"
 
 These settings choose which remotes `jj git fetch` and `jj git push` use when we
 don't name one. They're especially useful on a fork, where we may fetch from
-`upstream` and push to `origin`.
+`upstream` and push to `origin`. Both take a list as well, so
+`push = ["origin", "backup"]` pushes to two remotes at once.
 
 ### Keeping work off the remote
 
@@ -211,6 +212,15 @@ $ jj l
 
 The value is an array of arguments, not a string to be parsed by a shell.
 Anything we type after the alias is appended, so `jj l --limit 3` works.
+
+`jj` ships a few aliases of its own, such as `st` for `status` and `b` for
+`bookmark`. If one of those gets in the way, or a repository should ignore an
+alias from our user config, we can switch it off in a later layer:
+
+```toml
+[aliases.b]
+enabled = false
+```
 
 ## Revset aliases
 
