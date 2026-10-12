@@ -1,4 +1,4 @@
-# Steve's Jujutsu tutorial (with my updates Aug 2026!)
+# Steve's (updated) Jujutsu Tutorial
 
 [Read the updated version here](https://lookbusy1344.github.io/jujutsu-tutorial/), or
 [download it as a PDF](https://lookbusy1344.github.io/jujutsu-tutorial/jujutsu-tutorial.pdf).
@@ -6,6 +6,9 @@
 This is an expanded version of Steve Klabnik's original tutorial, with extra
 chapters and fixes. Thanks to Steve for his work — you can find it at
 [steveklabnik/jujutsu-tutorial](https://github.com/steveklabnik/jujutsu-tutorial)
+
+Claude and Codex helped complete this edition. Every command in the book has
+been checked against the jj command line.
 
 ## Requirements
 

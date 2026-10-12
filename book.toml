@@ -2,7 +2,7 @@
 authors = ["Steve Klabnik"]
 language = "en"
 src = "src"
-title = "Steve's Jujutsu Tutorial"
+title = "Steve's (updated) Jujutsu Tutorial"
 
 [output.html]
 git-repository-url = "https://github.com/steveklabnik/jujutsu-tutorial"
