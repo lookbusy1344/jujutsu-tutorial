@@ -28,6 +28,14 @@ commit. The one thing that loses it is rewriting the commit along the way, say
 with `git rebase` or a squash-merge on GitHub, since that header isn't part of
 git's own data model.
 
+What about commits that never passed through `jj` at all, like the history of a
+project that only uses `git`? Those have no header to read, so `jj` works out a
+change ID from the commit ID instead. Everyone who picks up that commit with
+`jj` gets the same change ID, whether they started with `jj git clone` or with
+a plain `git clone` followed by `jj git init`. Because it comes from the commit
+ID, though, it only lasts as long as the commit does: if someone rewrites that
+commit with `git`, the new one gets a new change ID.
+
 Before we push our commit up, we need to fix our repository:
 
 ```console
